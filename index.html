@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daily Motivation</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
+      background-size: cover;
+      color: white;
+      text-shadow: 1px 1px 3px black;
+      transition: background 1s ease-in-out;
+    }
+
+    #quote {
+      font-size: 1.8em;
+      text-align: center;
+      margin: 20px;
+      max-width: 600px;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 1em;
+      border: none;
+      border-radius: 12px;
+      background: #ff7f50;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background: #ff5722;
+    }
+
+    @keyframes fadeIn {
+      0% { opacity: 0; transform: translateY(20px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div id="quote">"Stay hungry, stay foolish." – Steve Jobs</div>
+  <button onclick="getQuote()">New Quote</button>
+
+  <script>
+    const quotes = [
+      `"The only way to do great work is to love what you do." – Steve Jobs`,
+      `"Believe you can and you're halfway there." – Theodore Roosevelt`,
+      `"Success is not final, failure is not fatal: It is the courage to continue that counts." – Winston Churchill`,
+      `"Don't watch the clock; do what it does. Keep going." – Sam Levenson`,
+      `"You are never too old to set another goal or to dream a new dream." – C.S. Lewis`
+    ];
+
+    function getQuote() {
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      const quoteDiv = document.getElementById("quote");
+
+      // Re-trigger animation
+      quoteDiv.style.animation = 'none';
+      void quoteDiv.offsetWidth; // trick to restart CSS animation
+      quoteDiv.style.animation = 'fadeIn 1s ease-in-out';
+
+      quoteDiv.innerText = quote;
+    }
+  </script>
+</body>
+</html>
