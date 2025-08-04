@@ -1,58 +1,66 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daily Motivation</title>
+  <title>Iron Will Motivation</title>
   <style>
     body {
+      margin: 0;
+      padding: 0;
       font-family: sans-serif;
+      background-color: #121212;
+      color: white;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
       height: 100vh;
-      margin: 0;
-background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1600&q=80') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      text-shadow: 1px 1px 3px black;
-      transition: background 1s ease-in-out;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #timer {
+      font-size: 2.5em;
+      margin: 20px 0;
     }
 
     #quote {
-      font-size: 1.8em;
-      text-align: center;
-      margin: 20px;
       max-width: 600px;
-      animation: fadeIn 1s ease-in-out;
+      font-size: 1.2em;
+      margin: 20px;
+      color: #bbb;
     }
 
     button {
-      padding: 12px 24px;
+      margin: 10px;
+      padding: 10px 20px;
       font-size: 1em;
-      border: none;
-      border-radius: 12px;
-      background: #ff7f50;
+      background-color: #ff5733;
       color: white;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-      transition: background 0.3s;
     }
 
     button:hover {
-      background: #ff5722;
-    }
-
-    @keyframes fadeIn {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+      background-color: #e03e1f;
     }
   </style>
 </head>
 <body>
+  <h1>Iron Will</h1>
+
+  <div id="timer">00 days 00:00:00</div>
+
   <div id="quote">"Stay hungry, stay foolish." – Steve Jobs</div>
-  <button onclick="getQuote()">New Quote</button>
+
+  <button onclick="startTimer()">Start Motivation</button>
+  <button onclick="resetTimer()">Reset</button>
 
   <script>
     const quotes = [
@@ -60,19 +68,62 @@ background: url('https://images.unsplash.com/photo-1506744038136-46273834b3fb?au
       `"Believe you can and you're halfway there." – Theodore Roosevelt`,
       `"Success is not final, failure is not fatal: It is the courage to continue that counts." – Winston Churchill`,
       `"Don't watch the clock; do what it does. Keep going." – Sam Levenson`,
-      `"You are never too old to set another goal or to dream a new dream." – C.S. Lewis`
+      `"You are never too old to set another goal or to dream a new dream." – C.S. Lewis`,
+      `"Courage isn’t having the strength to go on – it is going on when you don’t have strength." – Napoléon Bonaparte`
     ];
 
-    function getQuote() {
+    let quoteInterval;
+
+    function displayQuote() {
       const quote = quotes[Math.floor(Math.random() * quotes.length)];
-      const quoteDiv = document.getElementById("quote");
+      document.getElementById("quote").innerText = quote;
+    }
 
-      // Re-trigger animation
-      quoteDiv.style.animation = 'none';
-      void quoteDiv.offsetWidth; // trick to restart CSS animation
-      quoteDiv.style.animation = 'fadeIn 1s ease-in-out';
+    function startQuoteLoop() {
+      displayQuote();
+      quoteInterval = setInterval(displayQuote, 30000);
+    }
 
-      quoteDiv.innerText = quote;
+    function stopQuoteLoop() {
+      clearInterval(quoteInterval);
+    }
+
+    function formatTime(seconds) {
+      const days = Math.floor(seconds / (3600 * 24));
+      const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+      return `${days} days ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function updateTimer() {
+      const start = localStorage.getItem("motivationStart");
+      if (!start) return;
+
+      const now = Math.floor(Date.now() / 1000);
+      const startTime = parseInt(start);
+      const elapsed = now - startTime;
+      document.getElementById("timer").innerText = formatTime(elapsed);
+    }
+
+    function startTimer() {
+      if (!localStorage.getItem("motivationStart")) {
+        localStorage.setItem("motivationStart", Math.floor(Date.now() / 1000));
+      }
+      updateTimer();
+      setInterval(updateTimer, 1000);
+      startQuoteLoop();
+    }
+
+    function resetTimer() {
+      localStorage.removeItem("motivationStart");
+      document.getElementById("timer").innerText = "00 days 00:00:00";
+      stopQuoteLoop();
+    }
+
+    // If already started, resume automatically
+    if (localStorage.getItem("motivationStart")) {
+      startTimer();
     }
   </script>
 </body>
