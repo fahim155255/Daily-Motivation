@@ -10,6 +10,7 @@
       margin: 0;
       padding: 0;
       font-family: sans-serif;
+      background-color: #121212;
       color: white;
       display: flex;
       flex-direction: column;
@@ -17,29 +18,22 @@
       justify-content: center;
       height: 100vh;
       text-align: center;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      transition: background-image 1s ease-in-out;
     }
 
     h1 {
       margin-bottom: 10px;
-      text-shadow: 1px 1px 5px #000;
     }
 
     #timer {
       font-size: 2.5em;
       margin: 20px 0;
-      text-shadow: 1px 1px 5px #000;
     }
 
     #quote {
       max-width: 600px;
       font-size: 1.2em;
       margin: 20px;
-      color: #f0f0f0;
-      text-shadow: 1px 1px 5px #000;
+      color: #bbb;
     }
 
     button {
@@ -70,43 +64,24 @@
 
   <script>
     const quotes = [
-      {
-        text: `"The only way to do great work is to love what you do." – Steve Jobs`,
-        bg: "https://source.unsplash.com/1600x900/?motivation,work"
-      },
-      {
-        text: `"Believe you can and you're halfway there." – Theodore Roosevelt`,
-        bg: "https://source.unsplash.com/1600x900/?mountain,confidence"
-      },
-      {
-        text: `"Success is not final, failure is not fatal: It is the courage to continue that counts." – Winston Churchill`,
-        bg: "https://source.unsplash.com/1600x900/?success,courage"
-      },
-      {
-        text: `"Don't watch the clock; do what it does. Keep going." – Sam Levenson`,
-        bg: "https://source.unsplash.com/1600x900/?clock,focus"
-      },
-      {
-        text: `"You are never too old to set another goal or to dream a new dream." – C.S. Lewis`,
-        bg: "https://source.unsplash.com/1600x900/?dream,stars"
-      },
-      {
-        text: `"Courage isn’t having the strength to go on – it is going on when you don’t have strength." – Napoléon Bonaparte`,
-        bg: "https://source.unsplash.com/1600x900/?courage,strong"
-      }
+      `"The only way to do great work is to love what you do." – Steve Jobs`,
+      `"Believe you can and you're halfway there." – Theodore Roosevelt`,
+      `"Success is not final, failure is not fatal: It is the courage to continue that counts." – Winston Churchill`,
+      `"Don't watch the clock; do what it does. Keep going." – Sam Levenson`,
+      `"You are never too old to set another goal or to dream a new dream." – C.S. Lewis`,
+      `"Courage isn’t having the strength to go on – it is going on when you don’t have strength." – Napoléon Bonaparte`
     ];
 
     let quoteInterval;
 
     function displayQuote() {
-      const random = quotes[Math.floor(Math.random() * quotes.length)];
-      document.getElementById("quote").innerText = random.text;
-      document.body.style.backgroundImage = `url('${random.bg}')`;
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById("quote").innerText = quote;
     }
 
     function startQuoteLoop() {
       displayQuote();
-      quoteInterval = setInterval(displayQuote, 20000); // every 20 seconds
+      quoteInterval = setInterval(displayQuote, 30000);
     }
 
     function stopQuoteLoop() {
@@ -144,9 +119,9 @@
       localStorage.removeItem("motivationStart");
       document.getElementById("timer").innerText = "00 days 00:00:00";
       stopQuoteLoop();
-      document.body.style.backgroundImage = "none";
     }
 
+    // If already started, resume automatically
     if (localStorage.getItem("motivationStart")) {
       startTimer();
     }
