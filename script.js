@@ -21,7 +21,6 @@ const quotes = [
   "Work hard in silence. Let your success be your noise.",
   "The future depends on what you do today. – Mahatma Gandhi"
 ];
-
 let startTime = localStorage.getItem("startTime") || null;
 let intervalId = null;
 let quoteIntervalId = null;
