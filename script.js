@@ -4,7 +4,22 @@ const quotes = [
   "Believe you can and you're halfway there. – Theodore Roosevelt",
   "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
   "Don't watch the clock; do what it does. Keep going. – Sam Levenson",
-  "You are never too old to set another goal or to dream a new dream. – C.S. Lewis"
+  "You are never too old to set another goal or to dream a new dream. – C.S. Lewis",
+  "The secret of getting ahead is getting started. – Mark Twain",
+  "Everything you can imagine is real. – Pablo Picasso",
+  "It always seems impossible until it’s done. – Nelson Mandela",
+  "Don’t let yesterday take up too much of today. – Will Rogers",
+  "Hustle in silence and let your success make the noise. – Frank Ocean",
+  "If you want to achieve greatness stop asking for permission. – Unknown",
+  "Push yourself, because no one else is going to do it for you.",
+  "Dream it. Wish it. Do it.",
+  "Success doesn’t just find you. You have to go out and get it.",
+  "The harder you work for something, the greater you’ll feel when you achieve it.",
+  "Don’t wait for opportunity. Create it.",
+  "Sometimes we’re tested not to show our weaknesses, but to discover our strengths.",
+  "Great things never come from comfort zones.",
+  "Work hard in silence. Let your success be your noise.",
+  "The future depends on what you do today. – Mahatma Gandhi"
 ];
 
 let startTime = localStorage.getItem("startTime") || null;
