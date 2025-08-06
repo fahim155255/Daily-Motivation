@@ -1,20 +1,130 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Daily Motivation</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Iron Will Motivation</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background-color: #121212;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 10px;
+    }
+
+    #timer {
+      font-size: 2.5em;
+      margin: 20px 0;
+    }
+
+    #quote {
+      max-width: 600px;
+      font-size: 1.2em;
+      margin: 20px;
+      color: #bbb;
+    }
+
+    button {
+      margin: 10px;
+      padding: 10px 20px;
+      font-size: 1em;
+      background-color: #ff5733;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #e03e1f;
+    }
+  </style>
 </head>
 <body>
-  <div id="app">
-    <div id="quote">"Stay hungry, stay foolish." – Steve Jobs</div>
-    <div id="timer">0 days 00:00:00</div>
-    <div id="controls">
-      <button id="startBtn">Start</button>
-      <button id="resetBtn">Reset</button>
-    </div>
-  </div>
-  <script src="script.js"></script>
+  <h1>Iron Will</h1>
+
+  <div id="timer">00 days 00:00:00</div>
+
+  <div id="quote">"Stay hungry, stay foolish." – Steve Jobs</div>
+
+  <button onclick="startTimer()">Start Motivation</button>
+  <button onclick="resetTimer()">Reset</button>
+
+  <script>
+    const quotes = [
+      `"The only way to do great work is to love what you do." – Steve Jobs`,
+      `"Believe you can and you're halfway there." – Theodore Roosevelt`,
+      `"Success is not final, failure is not fatal: It is the courage to continue that counts." – Winston Churchill`,
+      `"Don't watch the clock; do what it does. Keep going." – Sam Levenson`,
+      `"You are never too old to set another goal or to dream a new dream." – C.S. Lewis`,
+      `"Courage isn’t having the strength to go on – it is going on when you don’t have strength." – Napoléon Bonaparte`
+    ];
+
+    let quoteInterval;
+
+    function displayQuote() {
+      const quote = quotes[Math.floor(Math.random() * quotes.length)];
+      document.getElementById("quote").innerText = quote;
+    }
+
+    function startQuoteLoop() {
+      displayQuote();
+      quoteInterval = setInterval(displayQuote, 30000);
+    }
+
+    function stopQuoteLoop() {
+      clearInterval(quoteInterval);
+    }
+
+    function formatTime(seconds) {
+      const days = Math.floor(seconds / (3600 * 24));
+      const hours = Math.floor((seconds % (3600 * 24)) / 3600);
+      const minutes = Math.floor((seconds % 3600) / 60);
+      const secs = seconds % 60;
+      return `${days} days ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+    }
+
+    function updateTimer() {
+      const start = localStorage.getItem("motivationStart");
+      if (!start) return;
+
+      const now = Math.floor(Date.now() / 1000);
+      const startTime = parseInt(start);
+      const elapsed = now - startTime;
+      document.getElementById("timer").innerText = formatTime(elapsed);
+    }
+
+    function startTimer() {
+      if (!localStorage.getItem("motivationStart")) {
+        localStorage.setItem("motivationStart", Math.floor(Date.now() / 1000));
+      }
+      updateTimer();
+      setInterval(updateTimer, 1000);
+      startQuoteLoop();
+    }
+
+    function resetTimer() {
+      localStorage.removeItem("motivationStart");
+      document.getElementById("timer").innerText = "00 days 00:00:00";
+      stopQuoteLoop();
+    }
+
+    // If already started, resume automatically
+    if (localStorage.getItem("motivationStart")) {
+      startTimer();
+    }
+  </script>
 </body>
 </html>
