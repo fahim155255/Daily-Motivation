@@ -1,1 +1,4 @@
-self.addEventListener('install', e => console.log('SW installed'));
+
+self.addEventListener("install", function (e) {
+  console.log("Service Worker installed");
+});

@@ -3,18 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <!-- ✅ Google Verification Tag -->
-  <meta name="google-site-verification" content="xSz1S_6sGlrCwrzN-wgjdMD2NqI01JraULrR99CkUKw" />
-
   <title>LevelUp – Motivation Timer & Daily Progress Tracker</title>
+
   <meta name="description" content="LevelUp helps you stay motivated with a focus timer, daily progress tracking, and rotating quotes.">
   <meta name="keywords" content="levelup, motivation app, timer, quotes, self-improvement, productivity, streak tracker">
+
   <meta property="og:title" content="LevelUp – Motivation Timer & Progress Tracker" />
   <meta property="og:description" content="Motivate yourself daily with LevelUp – a 24/7 motivation timer with rotating inspirational quotes." />
   <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/1055/1055646.png" />
   <meta property="og:url" content="https://fahim155255.github.io/Daily-Motivation/" />
   <meta name="twitter:card" content="summary" />
+
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055646.png" type="image/png">
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ff5722" />
@@ -43,22 +42,28 @@
       <button id="resetBtn">Reset</button>
     </div>
   </div>
+
   <button id="installBtn" style="display:none; position:fixed; bottom:20px; right:20px;">Install App</button>
+
   <script src="script.js"></script>
   <script>
     let deferredPrompt;
     const installBtn = document.getElementById("installBtn");
+
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
       installBtn.style.display = "block";
+
       installBtn.addEventListener("click", () => {
         installBtn.style.display = "none";
         deferredPrompt.prompt();
       });
     });
+
     if ("serviceWorker" in navigator) {
-      navigator.serviceWorker.register("sw.js").then(() => console.log("SW registered"));
+      navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("SW registered"));
     }
   </script>
 </body>
