@@ -1,7 +1,7 @@
 
 {
-  "name": "Daily Motivation",
-  "short_name": "Motivation",
+  "name": "LevelUp",
+  "short_name": "LevelUp",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#000000",

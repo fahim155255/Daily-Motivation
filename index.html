@@ -1,28 +1,22 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Iron Will – 24/7 Motivation Timer with Quotes</title>
+  <title>LevelUp – Motivation Timer & Daily Progress Tracker</title>
 
-  <!-- ✅ SEO Meta Tags -->
-  <meta name="description" content="Stay motivated with Iron Will – a free web app that tracks your focus time and inspires you with rotating motivational quotes every 20 seconds.">
-  <meta name="keywords" content="motivation app, productivity, timer, quotes, focus, study, inspirational quotes, ADHD focus tool, motivational quotes app">
+  <meta name="description" content="LevelUp helps you stay motivated with a focus timer, daily progress tracking, and rotating quotes.">
+  <meta name="keywords" content="levelup, motivation app, timer, quotes, self-improvement, productivity, streak tracker">
 
-  <!-- ✅ Open Graph for sharing -->
-  <meta property="og:title" content="Iron Will – 24/7 Motivation Timer" />
-  <meta property="og:description" content="Motivate yourself with quotes and a powerful timer – no install needed." />
+  <meta property="og:title" content="LevelUp – Motivation Timer & Progress Tracker" />
+  <meta property="og:description" content="Motivate yourself daily with LevelUp – a 24/7 motivation timer with rotating inspirational quotes." />
   <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/1055/1055646.png" />
-  <meta property="og:url" content="https://fahim155255.github.io/motivation-app/" />
+  <meta property="og:url" content="https://fahim155255.github.io/Daily-Motivation/" />
   <meta name="twitter:card" content="summary" />
 
-  <!-- ✅ App Identity -->
   <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055646.png" type="image/png">
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ff5722" />
-
-  <!-- ✅ Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LB0TJEH8QB"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
@@ -30,139 +24,46 @@
     gtag('js', new Date());
     gtag('config', 'G-LB0TJEH8QB');
   </script>
-
-  <!-- Your stylesheet -->
   <link rel="stylesheet" href="style.css" />
 </head>
-  <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-LB0TJEH8QB"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-LB0TJEH8QB');
-</script>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Iron Will Motivation</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background-color: #121212;
-      color: white;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-
-    h1 {
-      margin-bottom: 10px;
-    }
-
-    #timer {
-      font-size: 2.5em;
-      margin: 20px 0;
-    }
-
-    #quote {
-      max-width: 600px;
-      font-size: 1.2em;
-      margin: 20px;
-      color: #bbb;
-    }
-
-    button {
-      margin: 10px;
-      padding: 10px 20px;
-      font-size: 1em;
-      background-color: #ff5733;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    button:hover {
-      background-color: #e03e1f;
-    }
-  </style>
-</head>
 <body>
-  <h1>Iron Will</h1>
+  <div id="app">
+    <h1 style="margin-bottom: 10px;">LevelUp</h1>
+    <div id="quote">"Stay hungry, stay foolish." – Steve Jobs</div>
+    <div id="timer">0 days 00:00:00</div>
+    <div id="progress-box">
+      <label id="level-label">Level: Beginner</label>
+      <div id="progress-container">
+        <div id="progress-bar"></div>
+      </div>
+    </div>
+    <div id="controls">
+      <button id="startBtn">Start</button>
+      <button id="resetBtn">Reset</button>
+    </div>
+  </div>
 
-  <div id="timer">00 days 00:00:00</div>
+  <button id="installBtn" style="display:none; position:fixed; bottom:20px; right:20px;">Install App</button>
 
-  <div id="quote">"Stay hungry, stay foolish." – Steve Jobs</div>
-
-  <button onclick="startTimer()">Start Motivation</button>
-  <button onclick="resetTimer()">Reset</button>
-
+  <script src="script.js"></script>
   <script>
-    const quotes = [
-      `"The only way to do great work is to love what you do." – Steve Jobs`,
-      `"Believe you can and you're halfway there." – Theodore Roosevelt`,
-      `"Success is not final, failure is not fatal: It is the courage to continue that counts." – Winston Churchill`,
-      `"Don't watch the clock; do what it does. Keep going." – Sam Levenson`,
-      `"You are never too old to set another goal or to dream a new dream." – C.S. Lewis`,
-      `"Courage isn’t having the strength to go on – it is going on when you don’t have strength." – Napoléon Bonaparte`
-    ];
+    let deferredPrompt;
+    const installBtn = document.getElementById("installBtn");
 
-    let quoteInterval;
+    window.addEventListener("beforeinstallprompt", (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      installBtn.style.display = "block";
 
-    function displayQuote() {
-      const quote = quotes[Math.floor(Math.random() * quotes.length)];
-      document.getElementById("quote").innerText = quote;
-    }
+      installBtn.addEventListener("click", () => {
+        installBtn.style.display = "none";
+        deferredPrompt.prompt();
+      });
+    });
 
-    function startQuoteLoop() {
-      displayQuote();
-      quoteInterval = setInterval(displayQuote, 30000);
-    }
-
-    function stopQuoteLoop() {
-      clearInterval(quoteInterval);
-    }
-
-    function formatTime(seconds) {
-      const days = Math.floor(seconds / (3600 * 24));
-      const hours = Math.floor((seconds % (3600 * 24)) / 3600);
-      const minutes = Math.floor((seconds % 3600) / 60);
-      const secs = seconds % 60;
-      return `${days} days ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
-    }
-
-    function updateTimer() {
-      const start = localStorage.getItem("motivationStart");
-      if (!start) return;
-
-      const now = Math.floor(Date.now() / 1000);
-      const startTime = parseInt(start);
-      const elapsed = now - startTime;
-      document.getElementById("timer").innerText = formatTime(elapsed);
-    }
-
-    function startTimer() {
-      if (!localStorage.getItem("motivationStart")) {
-        localStorage.setItem("motivationStart", Math.floor(Date.now() / 1000));
-      }
-      updateTimer();
-      setInterval(updateTimer, 1000);
-      startQuoteLoop();
-    }
-
-    function resetTimer() {
-      localStorage.removeItem("motivationStart");
-      document.getElementById("timer").innerText = "00 days 00:00:00";
-      stopQuoteLoop();
-    }
-
-    // If already started, resume automatically
-    if (localStorage.getItem("motivationStart")) {
-      startTimer();
+    if ("serviceWorker" in navigator) {
+      navigator.serviceWorker.register("sw.js")
+        .then(() => console.log("SW registered"));
     }
   </script>
 </body>
