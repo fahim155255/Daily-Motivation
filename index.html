@@ -3,22 +3,17 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-
-  <!-- ✅ Google Site Verification -->
   <meta name="google-site-verification" content="xSz1S_6sGlrCwrzN-wgjdMD2NqI01JraULrR99CkUKw" />
-  
   <title>LevelUp – Motivation Timer & Daily Progress Tracker</title>
-
   <meta name="description" content="LevelUp helps you stay motivated with a focus timer, daily progress tracking, and rotating quotes.">
   <meta name="keywords" content="levelup, motivation app, timer, quotes, self-improvement, productivity, streak tracker">
-
   <meta property="og:title" content="LevelUp – Motivation Timer & Progress Tracker" />
   <meta property="og:description" content="Motivate yourself daily with LevelUp – a 24/7 motivation timer with rotating inspirational quotes." />
-  <meta property="og:image" content="https://cdn-icons-png.flaticon.com/512/1055/1055646.png" />
+  <meta property="og:image" content="icon-512.png" />
   <meta property="og:url" content="https://fahim155255.github.io/Daily-Motivation/" />
   <meta name="twitter:card" content="summary" />
-
-  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/1055/1055646.png" type="image/png">
+  <link rel="icon" href="favicon-32.png" type="image/png">
+  <link rel="apple-touch-icon" href="apple-180.png" />
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#ff5722" />
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-LB0TJEH8QB"></script>
@@ -29,11 +24,71 @@
     gtag('config', 'G-LB0TJEH8QB');
   </script>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      color: white;
+      background: #0f0f0f url('bg-texture.png') repeat;
+      background-size: cover;
+    }
+    #quote {
+      font-size: 1.5em;
+      text-align: center;
+      margin: 20px;
+      max-width: 600px;
+      opacity: 0;
+      transition: opacity 1s ease-in-out;
+    }
+    #quote.show {
+      opacity: 1;
+    }
+    #timer {
+      font-size: 1.3em;
+      margin-bottom: 10px;
+      transition: transform 0.2s ease;
+    }
+    #timer.pop {
+      transform: scale(1.1);
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 1em;
+      border: none;
+      border-radius: 10px;
+      background: #ff5722;
+      color: white;
+      cursor: pointer;
+      margin: 5px;
+    }
+    button:hover {
+      background: #e64a19;
+    }
+    #progress-container {
+      width: 80%;
+      height: 20px;
+      background: #444;
+      border-radius: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #ff9800;
+      transition: width 0.5s ease;
+    }
+  </style>
 </head>
 <body>
   <div id="app">
     <h1 style="margin-bottom: 10px;">LevelUp</h1>
-    <div id="quote">"Stay hungry, stay foolish." – Steve Jobs</div>
+    <div id="quote">Loading...</div>
     <div id="timer">0 days 00:00:00</div>
     <div id="progress-box">
       <label id="level-label">Level: Beginner</label>
@@ -46,19 +101,84 @@
       <button id="resetBtn">Reset</button>
     </div>
   </div>
-
   <button id="installBtn" style="display:none; position:fixed; bottom:20px; right:20px;">Install App</button>
-
-  <script src="script.js"></script>
   <script>
+    const quotes = [
+      "Stay hungry, stay foolish. – Steve Jobs",
+      "The only way to do great work is to love what you do. – Steve Jobs",
+      "Believe you can and you're halfway there. – Theodore Roosevelt",
+      "Success is not final, failure is not fatal: It is the courage to continue that counts. – Winston Churchill",
+      "Don't watch the clock; do what it does. Keep going. – Sam Levenson",
+      "You are never too old to set another goal or to dream a new dream. – C.S. Lewis",
+      "Hard work beats talent when talent doesn't work hard. – Tim Notke",
+      "Do something today that your future self will thank you for.",
+      "Push yourself, because no one else is going to do it for you.",
+      "Great things never come from comfort zones.",
+      "Dream it. Wish it. Do it.",
+      "Success doesn’t just find you. You have to go out and get it.",
+      "The harder you work for something, the greater you'll feel when you achieve it.",
+      "Don't stop when you're tired. Stop when you're done.",
+      "Wake up with determination. Go to bed with satisfaction."
+    ];
+    let quoteIndex = 0;
+    function showQuote() {
+      const quoteEl = document.getElementById("quote");
+      quoteEl.classList.remove("show");
+      setTimeout(() => {
+        quoteEl.textContent = quotes[quoteIndex];
+        quoteEl.classList.add("show");
+        quoteIndex = (quoteIndex + 1) % quotes.length;
+      }, 500);
+    }
+    setInterval(showQuote, 20000);
+    showQuote();
+
+    let startTime = null;
+    let timerInterval = null;
+
+    const timerEl = document.getElementById("timer");
+    const progressBar = document.getElementById("progress-bar");
+    const levelLabel = document.getElementById("level-label");
+
+    document.getElementById("startBtn").addEventListener("click", () => {
+      if (!startTime) {
+        startTime = Date.now();
+        timerInterval = setInterval(updateTimer, 1000);
+      }
+    });
+
+    document.getElementById("resetBtn").addEventListener("click", () => {
+      startTime = null;
+      clearInterval(timerInterval);
+      timerEl.textContent = "0 days 00:00:00";
+      progressBar.style.width = "0%";
+      levelLabel.textContent = "Level: Beginner";
+    });
+
+    function updateTimer() {
+      const elapsed = Date.now() - startTime;
+      const days = Math.floor(elapsed / (1000 * 60 * 60 * 24));
+      const hours = String(Math.floor((elapsed / (1000 * 60 * 60)) % 24)).padStart(2, '0');
+      const minutes = String(Math.floor((elapsed / (1000 * 60)) % 60)).padStart(2, '0');
+      const seconds = String(Math.floor((elapsed / 1000) % 60)).padStart(2, '0');
+      timerEl.textContent = `${days} days ${hours}:${minutes}:${seconds}`;
+      timerEl.classList.add("pop");
+      setTimeout(() => timerEl.classList.remove("pop"), 200);
+      let progress = Math.min((days / 15) * 100, 100);
+      progressBar.style.width = progress + "%";
+      if (days < 3) levelLabel.textContent = "Level: Beginner";
+      else if (days < 7) levelLabel.textContent = "Level: Rising";
+      else if (days < 15) levelLabel.textContent = "Level: Dedicated";
+      else levelLabel.textContent = "Level: Iron Will";
+    }
+
+    // PWA Install
     let deferredPrompt;
     const installBtn = document.getElementById("installBtn");
-
     window.addEventListener("beforeinstallprompt", (e) => {
       e.preventDefault();
       deferredPrompt = e;
       installBtn.style.display = "block";
-
       installBtn.addEventListener("click", () => {
         installBtn.style.display = "none";
         deferredPrompt.prompt();
