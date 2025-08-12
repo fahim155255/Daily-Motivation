@@ -1,4 +1,3 @@
-
 function formatDuration(ms) {
   const totalSeconds = Math.floor(ms / 1000);
   const days = Math.floor(totalSeconds / 86400);
@@ -8,6 +7,25 @@ function formatDuration(ms) {
   return `${days} days ${hours}:${minutes}:${seconds}`;
 }
 
+const quotes = [
+  `"The only way to do great work is to love what you do." – Steve Jobs`,
+  `"Believe you can and you're halfway there." – Theodore Roosevelt`,
+  `"Success is not final, failure is not fatal: It is the courage to continue that counts." – Winston Churchill`,
+  `"Don't watch the clock; do what it does. Keep going." – Sam Levenson`,
+  `"You are never too old to set another goal or to dream a new dream." – C.S. Lewis`,
+  `"Hard work beats talent when talent doesn't work hard." – Tim Notke`,
+  `"Dream big and dare to fail." – Norman Vaughan`,
+  `"Your limitation—it's only your imagination." – Unknown`,
+  `"Push yourself, because no one else is going to do it for you." – Unknown`,
+  `"Great things never come from comfort zones." – Unknown`,
+  `"Success doesn’t just find you. You have to go out and get it." – Unknown`,
+  `"The harder you work for something, the greater you’ll feel when you achieve it." – Unknown`,
+  `"Don’t stop when you’re tired. Stop when you’re done." – Unknown`,
+  `"Wake up with determination. Go to bed with satisfaction." – Unknown`,
+  `"Do something today that your future self will thank you for." – Unknown`
+];
+
+let quoteIndex = 0;
 const quoteEl = document.getElementById("quote");
 const timerEl = document.getElementById("timer");
 const startBtn = document.getElementById("startBtn");
@@ -18,15 +36,12 @@ let intervalId = null;
 let quoteIntervalId = null;
 
 function updateQuote() {
-  fetch("https://api.quotable.io/random")
-    .then(res => res.json())
-    .then(data => {
-      const fullQuote = `"${data.content}" – ${data.author}`;
-      quoteEl.innerText = fullQuote;
-    })
-    .catch(err => {
-      quoteEl.innerText = "Stay motivated. You're doing great!";
-    });
+  quoteEl.classList.remove("fade-in");
+  void quoteEl.offsetWidth; // restart animation
+  quoteEl.innerText = quotes[quoteIndex];
+  quoteEl.classList.add("fade-in");
+
+  quoteIndex = (quoteIndex + 1) % quotes.length;
 }
 
 function updateTimer() {
