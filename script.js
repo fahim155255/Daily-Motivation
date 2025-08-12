@@ -86,6 +86,9 @@ function startTimer() {
   updateProgressLevel();
   intervalId = setInterval(updateTimer, 1000);
   quoteIntervalId = setInterval(updateQuote, 20000);
+  quoteEl.classList.remove("fade-in");
+void quoteEl.offsetWidth; // forces reflow so animation restarts
+quoteEl.classList.add("fade-in");
 }
 
 function resetTimer() {
