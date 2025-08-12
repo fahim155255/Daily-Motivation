@@ -40,6 +40,17 @@ body {
   max-width: 90%;
   line-height: 1.5;
   padding: 0 1rem;
+  opacity: 1; /* Ensures clean animation start/end */
+}
+
+/* Fade-in animation for quotes */
+.fade-in {
+  animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 #timer {
@@ -138,7 +149,7 @@ button:focus {
 
   #timer {
     font-size: 1rem;
-  margin: 0.5rem 0;
+    margin: 0.5rem 0;
   }
 
   button {
