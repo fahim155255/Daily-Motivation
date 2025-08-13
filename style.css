@@ -40,19 +40,18 @@ body {
   max-width: 90%;
   line-height: 1.5;
   padding: 0 1rem;
-  opacity: 0; /* Start invisible */
-  transform: translateY(20px); /* Start slightly below */
-  transition: all 0.5s ease-out; /* Smooth transition */
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.5s ease-out;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #quote.fade-in {
   opacity: 1;
   transform: translateY(0);
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
 }
 
 #timer {
@@ -125,7 +124,7 @@ button:focus {
   margin-top: 1rem;
 }
 
-/* Light mode adaptation */
+/* Light mode */
 @media (prefers-color-scheme: light) {
   body {
     background-color: var(--bg-light);
@@ -142,11 +141,12 @@ button:focus {
   }
 }
 
-/* Mobile responsiveness */
+/* Mobile */
 @media screen and (max-width: 600px) {
   #quote {
     font-size: 1.1rem;
     padding: 0 0.625rem;
+    min-height: 100px;
   }
 
   #timer {
@@ -166,24 +166,15 @@ button:focus {
     align-items: center;
     width: 100%;
   }
-
-  #installBtn {
-    position: fixed;
-    bottom: 0.625rem;
-    right: 0.625rem;
-    font-size: 0.9rem;
-    width: auto;
-    z-index: 100;
-  }
 }
 
 /* Loading animation */
+.loading {
+  animation: pulse 1.5s infinite ease-in-out;
+}
+
 @keyframes pulse {
   0% { opacity: 0.6; }
   50% { opacity: 1; }
   100% { opacity: 0.6; }
-}
-
-.loading {
-  animation: pulse 1.5s infinite ease-in-out;
 }
